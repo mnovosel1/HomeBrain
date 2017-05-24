@@ -12,14 +12,14 @@ CREATE TABLE changelog (
 );
 
 CREATE TRIGGER changelog_trigg
-    BEFORE UPDATE
-    ON states
-    FOR EACH ROW
-	WHEN OLD.active <> NEW.active
+  BEFORE UPDATE
+  ON states
+  FOR EACH ROW
+  WHEN OLD.active <> NEW.active
 BEGIN
-    INSERT INTO changelog (statebefore, stateid, changedto)
-	VALUES ((SELECT group_concat(active, '') FROM states), NEW.rowid, NEW.active);
-	DELETE FROM changelog WHERE timestamp <= date('now', '-30 day');
+  INSERT INTO changelog (statebefore, stateid, changedto)
+  VALUES ((SELECT group_concat(active, '') FROM states), NEW.rowid, NEW.active);
+  DELETE FROM changelog WHERE timestamp <= date('now', '-30 day');
 END;
 
 
