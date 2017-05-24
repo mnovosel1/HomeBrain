@@ -1,0 +1,32 @@
+CREATE TABLE states (
+  name varchar(75) NOT NULL,
+  active int(1) NOT NULL DEFAULT 0
+);
+
+CREATE TABLE changelog (
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+  statebefore varchar(99) NOT NULL,
+  stateid int(11) NOT NULL,
+  changedto int(1) NOT NULL,
+  FOREIGN KEY (stateid) REFERENCES states(rowid)
+);
+
+CREATE TRIGGER changelog_trigg
+    BEFORE UPDATE
+    ON states
+    FOR EACH ROW
+BEGIN
+    INSERT INTO changelog (statebefore, stateid, changedto)
+	VALUES ((SELECT group_concat(active, '') FROM states), NEW.rowid, NEW.active);
+	DELETE FROM changelog WHERE timestamp <= date('now', '-30 day');
+END;
+
+
+
+INSERT INTO states (name, active) VALUES
+('KODI', 0),
+('HomeServer', 0),
+('HomeBrain user', 0),
+('HomeServer user', 0),
+('TV recording', 0),
+('Torrenting', 0);
