@@ -24,10 +24,10 @@ END;
 
 
 
-INSERT INTO states (name, active) VALUES
-('KODI', 0),
-('HomeServer', 0),
-('HomeBrain user', 0),
-('HomeServer user', 0),
-('TV recording', 0),
-('Torrenting', 0);
+INSERT INTO states (name) VALUES
+('KODI'),
+('HomeServer'),
+('HomeBrain user'),
+('HomeServer user'),
+('TV recording'),
+('Torrenting');
