@@ -23,7 +23,6 @@ BEGIN
 END;
 
 
-
 INSERT INTO states (name) VALUES
 ('KODI'),
 ('HomeServer'),
