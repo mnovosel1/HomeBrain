@@ -31,7 +31,10 @@ dailyCronWakeLog=$(cat $DIR/var/dailyCronWake.log)
 
 # provjeri server, kodi
 serverlive=$(ping -c1 10.10.10.100 | grep 'received' | awk -F ',' '{print $2}' | awk '{ print $1}');
+sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$serverlive WHERE name='HomeServer'";
+
 kodilive=$(ping -c1 10.10.10.10 | grep 'received' | awk -F ',' '{print $2}' | awk '{ print $1}');
+sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$kodilive WHERE name='KODI'";
 
 
 
