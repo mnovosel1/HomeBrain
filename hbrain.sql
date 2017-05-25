@@ -4,8 +4,8 @@ CREATE TABLE states (
 );
 
 CREATE TABLE changelog (
-  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-  statebefore varchar(99) NOT NULL,
+  timestamp DATETIME DEFAULT (datetime('now','localtime')),
+  statebefore varchar(30) NOT NULL,
   stateid int(11) NOT NULL,
   changedto int(1) NOT NULL,
   FOREIGN KEY (stateid) REFERENCES states(rowid)
