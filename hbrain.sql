@@ -18,7 +18,7 @@ CREATE TRIGGER changelog_trigg
   WHEN OLD.active <> NEW.active
 BEGIN
   INSERT INTO changelog (statebefore, stateid, changedto)
-  VALUES ((SELECT group_concat(active, '') FROM states), NEW.rowid, NEW.active);
+  VALUES ((SELECT group_concat(active, '') FROM states ORDER BY rowid ASC), NEW.rowid, NEW.active);
   DELETE FROM changelog WHERE timestamp <= date('now', '-30 day');
 END;
 
