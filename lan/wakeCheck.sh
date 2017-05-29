@@ -43,19 +43,11 @@ else
 fi
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$active WHERE name='HomeBrain user'";
 
-if [ $(/usr/bin/ssh 10.10.10.100 "who | wc -l") -gt 0 ] then;
-  active=1
-else
-  active=0
-fi
-sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$active WHERE name='HomeServer user'";
+usersonhserver=$(/usr/bin/ssh 10.10.10.100 "who | wc -l");
+sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$usersonhserver WHERE name='HomeServer user'";
 
-if [ $(/usr/bin/ssh 10.10.10.100 "transmission-remote --list | sed '1d;$d' | grep -v Done | wc -l") -gt 0 ] then;
-  active=1
-else
-  active=0
-fi
-sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$active WHERE name='Torrenting'";
+torrents=$(/usr/bin/ssh 10.10.10.100 "transmission-remote --list | sed '1d;$d' | grep -v Done | wc -l");
+sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$torrents WHERE name='Torrenting'";
 
 # ako je server upaljen azuriraj waketime
 if [ $((serverlive)) -gt 0 ]; then
