@@ -36,7 +36,11 @@ sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$serverlive WHERE name='Hom
 kodilive=$(ping -c1 10.10.10.10 | grep 'received' | awk -F ',' '{print $2}' | awk '{ print $1}');
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$kodilive WHERE name='KODI'";
 
-sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$(who | wc -l) WHERE name='HomeBrain user'";
+usersonhbrain=$(who | wc -l);
+sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$usersonhbrain WHERE name='HomeBrain user'";
+
+usersonhserver=$(usersonhserver);
+sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$usersonhserver WHERE name='HomeServer user'";
 
 # ako je server upaljen azuriraj waketime
 if [ $((serverlive)) -gt 0 ]; then
