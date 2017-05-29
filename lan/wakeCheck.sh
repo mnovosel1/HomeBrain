@@ -36,24 +36,24 @@ sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$serverlive WHERE name='Hom
 kodilive=$(ping -c1 10.10.10.10 | grep 'received' | awk -F ',' '{print $2}' | awk '{ print $1}');
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$kodilive WHERE name='KODI'";
 
-if [ $(who | wc -l) -gt 0 ] then;
-  active=1;
+if [ $(who | wc -l) -gt 0 ]; then
+  active=1
 else
-  active=0;
+  active=0
 fi
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$active WHERE name='HomeBrain user'";
 
-if [ $(/usr/bin/ssh 10.10.10.100 "who | wc -l") -gt 0 ] then;
-  active=1;
+if [ $(/usr/bin/ssh 10.10.10.100 "who | wc -l") -gt 0 ]; then
+  active=1
 else
-  active=0;
+  active=0
 fi
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$active WHERE name='HomeServer user'";
 
-if [ $(/usr/bin/ssh 10.10.10.100 "transmission-remote --list | sed '1d;$d' | grep -v Done | wc -l") -gt 0 ] then;
-  active=1;
+if [ $(/usr/bin/ssh 10.10.10.100 "transmission-remote --list | sed '1d;$d' | grep -v Done | wc -l") -gt 0 ]; then
+  active=1
 else
-  active=0;
+  active=0
 fi
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$active WHERE name='Torrenting'";
 
