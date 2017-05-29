@@ -25,7 +25,7 @@ BEGIN
             NEW.rowid, 
             NEW.active, 
             (SELECT weight+1 FROM changelog WHERE stateid=NEW.rowid AND changedto=NEW.active)
-            );
+         );
   DELETE FROM changelog WHERE timestamp <= date('now', '-30 day');
 END;
 
