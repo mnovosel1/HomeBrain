@@ -57,7 +57,9 @@ exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "changelog"\' | grep \'^INSERT\'
 foreach ( $output as $line )
   $sql .= "        ".$line . "\n";
 
-$sql .= '    COMMIT;
+$sql .= '
+    COMMIT;
+
 ';
 
 file_put_contents($path .'/hbrain.sql', $sql);
