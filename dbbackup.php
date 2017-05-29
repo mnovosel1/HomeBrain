@@ -12,7 +12,7 @@ $sql = "
 
         CREATE TABLE states (
             name varchar(75) NOT NULL,
-            auto int(1) NOT NULL DEFAULT 0
+            auto int(1) NOT NULL DEFAULT 0,
             active int(1) NOT NULL DEFAULT 0
         );
 
