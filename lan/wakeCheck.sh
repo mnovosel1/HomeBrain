@@ -39,8 +39,11 @@ sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$kodilive WHERE name='KODI'
 usersonhbrain=$(who | wc -l);
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$usersonhbrain WHERE name='HomeBrain user'";
 
-usersonhserver=$(usersonhserver);
+usersonhserver=$(/usr/bin/ssh 10.10.10.100 "who | wc -l");
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$usersonhserver WHERE name='HomeServer user'";
+
+torrents=$(/usr/bin# /usr/bin/ssh 10.10.10.100 "transmission-remote --list | sed '1d;$d' | grep -v Done | wc -l");
+sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$torrents WHERE name='HomeServer user'";
 
 # ako je server upaljen azuriraj waketime
 if [ $((serverlive)) -gt 0 ]; then
