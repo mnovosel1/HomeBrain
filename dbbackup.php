@@ -41,11 +41,12 @@ $sql .= "
             WHEN OLD.active <> NEW.active
             BEGIN
                 INSERT OR REPLACE INTO changelog (timestamp, statebefore, stateid, changedto, weight)
-                VALUES (  datetime('now','localtime'), 
+                VALUES (
+                            datetime('now','localtime'), 
                             (SELECT group_concat(active, '') FROM states ORDER BY rowid ASC), 
                             NEW.rowid, 
                             NEW.active, 
-                            (SELECT weight+1 FROM changelog WHERE stateid=NEW.rowid AND changedto=NEW.active)
+                            (SELECT weight+1 FROM changelog WHERE statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC) AND stateid=NEW.rowid AND changedto=NEW.active)
                         );
                 DELETE FROM changelog WHERE timestamp <= date('now', '-30 day');
             END;
