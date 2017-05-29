@@ -58,7 +58,7 @@ exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "changelog"\' | grep \'^INSERT\'
 foreach ( $output as $line )
   $sql .= "        ".$line . "\n";
 
-$sql = "
+$sql .= "
         CREATE VIEW logic AS 
             SELECT c.weight, c.statebefore, c.changedto, s.name
                 FROM changelog c join states s ON c.stateid=s.rowid
