@@ -57,6 +57,12 @@ else
 fi
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$active WHERE name='Torrenting'";
 
+if mpc status | grep playing >/dev/nul; then
+  sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=1 WHERE name='MPD playing'";
+else
+  sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=0 WHERE name='MPD playing'";
+fi
+
 # ako je server upaljen azuriraj waketime
 if [ $((serverlive)) -gt 0 ]; then
   /usr/bin/ssh 10.10.10.100 -p 22 "/root/chkforwake.sh" > $DIR/var/srvWakeTime.log
