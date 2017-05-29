@@ -4,10 +4,12 @@ CREATE TABLE states (
 );
 
 CREATE TABLE changelog (
-  timestamp DATETIME DEFAULT (datetime('now','localtime')),
+  timestamp DATETIME,
   statebefore varchar(30) NOT NULL,
   stateid int(11) NOT NULL,
   changedto int(1) NOT NULL,
+  weight int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY(stateid, changedto),
   FOREIGN KEY (stateid) REFERENCES states(rowid)
 );
 
@@ -17,8 +19,8 @@ CREATE TRIGGER changelog_trigg
   FOR EACH ROW
   WHEN OLD.active <> NEW.active
 BEGIN
-  INSERT INTO changelog (statebefore, stateid, changedto)
-  VALUES ((SELECT group_concat(active, '') FROM states ORDER BY rowid ASC), NEW.rowid, NEW.active);
+  INSERT OR REPLACE INTO changelog (timestamp, statebefore, stateid, changedto, weight)
+  VALUES (datetime('now','localtime'), (SELECT group_concat(active, '') FROM states ORDER BY rowid ASC), NEW.rowid, NEW.active, weight+1);
   DELETE FROM changelog WHERE timestamp <= date('now', '-30 day');
 END;
 
