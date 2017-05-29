@@ -9,7 +9,7 @@ CREATE TABLE changelog (
   stateid int(11) NOT NULL,
   changedto int(1) NOT NULL,
   weight int(11) NOT NULL DEFAULT 1,
-  PRIMARY KEY(stateid, changedto),
+  PRIMARY KEY(statebefore, stateid, changedto),
   FOREIGN KEY (stateid) REFERENCES states(rowid)
 );
 
@@ -28,7 +28,6 @@ BEGIN
          );
   DELETE FROM changelog WHERE timestamp <= date('now', '-30 day');
 END;
-
 
 INSERT INTO states (name) VALUES
 ('KODI'),
