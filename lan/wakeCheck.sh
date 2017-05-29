@@ -62,7 +62,6 @@ if [ $((serverlive)) -gt 0 ]; then
   /usr/bin/ssh 10.10.10.100 -p 22 "/root/chkforwake.sh" > $DIR/var/srvWakeTime.log
 fi
 
-
 nowtime=$(date +"%s");
 nowhour=$(date +"%k");
 waketime=$(cat $DIR/var/srvWakeTime.log);
