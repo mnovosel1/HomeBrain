@@ -9,7 +9,7 @@ function email {
 
 function srvShut {
   if [ $(who | wc -l) -lt 1 ]; then
-	$DIR/lan/srvShut.sh;
+	  $DIR/lan/srvShut.sh;
   fi
   exit 0;
 }
@@ -87,7 +87,7 @@ if [ $((serverlive)) -lt 1 -a $((diff)) -gt 0 -a $((diff)) -lt 900 ]; then
 fi
 
 # ako je server upaljen, kodi ugasen i timer veci od pola sata - ugasi server
-if [ $((c2alarm)) -lt 1 -a $((serverlive)) -gt 0 -a $((kodilive)) -lt 1 -a $((diff)) -gt 1800 ]; then
+if [ $((serverlive)) -gt 0 -a $((kodilive)) -lt 1 -a $((diff)) -gt 1800 ]; then
 	srvShut;
 fi
 
