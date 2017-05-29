@@ -14,12 +14,13 @@ $sql = "
     name varchar(75) NOT NULL,
     active int(1) NOT NULL DEFAULT 0
     );
+
 ";
 
 $output = '';
 exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "states"\' | grep \'^INSERT\'', $output);
 foreach ( $output as $line )
-  $sql .= $line . "\n";
+  $sql .= "    ".$line . "\n";
 
 $sql .= "
     CREATE TABLE changelog (
@@ -49,12 +50,13 @@ $sql .= "
             );
     DELETE FROM changelog WHERE timestamp <= date('now', '-30 day');
     END;
+    
 ";
 
 $output = '';
 exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "changelog"\' | grep \'^INSERT\'', $output);
 foreach ( $output as $line )
-  $sql .= $line . "\n";
+  $sql .= "    ".$line . "\n";
 
 $sql .= 'COMMIT;';
 
