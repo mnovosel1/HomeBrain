@@ -29,14 +29,14 @@ function kodiShut {
 dailyCronWake=5
 dailyCronWakeLog=$(cat $DIR/var/dailyCronWake.log)
 
-# provjeri server, kodi
+# provjeri server, kodi, br korisnika na HBrainu
 serverlive=$(ping -c1 10.10.10.100 | grep 'received' | awk -F ',' '{print $2}' | awk '{ print $1}');
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$serverlive WHERE name='HomeServer'";
 
 kodilive=$(ping -c1 10.10.10.10 | grep 'received' | awk -F ',' '{print $2}' | awk '{ print $1}');
 sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$kodilive WHERE name='KODI'";
 
-
+sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$(who | wc -l) WHERE name='HomeBrain user'";
 
 # ako je server upaljen azuriraj waketime
 if [ $((serverlive)) -gt 0 ]; then
