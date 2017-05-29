@@ -20,7 +20,7 @@ $sql = "
 $output = '';
 exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "states"\' | grep \'^INSERT\'', $output);
 foreach ( $output as $line )
-  $sql .= "    ".$line . "\n";
+  $sql .= "        ".$line . "\n";
 
 $sql .= "
         CREATE TABLE changelog (
@@ -55,7 +55,7 @@ $sql .= "
 $output = '';
 exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "changelog"\' | grep \'^INSERT\'', $output);
 foreach ( $output as $line )
-  $sql .= "    ".$line . "\n";
+  $sql .= "        ".$line . "\n";
 
 $sql .= '    COMMIT;
 ';
