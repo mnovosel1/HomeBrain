@@ -9,7 +9,7 @@ $db    = new SQLite3($path .'/var/hbrain.db');
 $query = $db->query('SELECT rowid, name FROM states;');
 
 while ($entry = $query->fetchArray(SQLITE3_ASSOC)) {
-    $states[$entry['id']] = $entry['name'];
+    $states[$entry['rowid']] = $entry['name'];
 }
     var_dump($states);
 exit();
