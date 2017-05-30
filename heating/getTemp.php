@@ -13,6 +13,23 @@ $tempSet = $db->querySingle("SELECT temp
                               WHERE wday = STRFTIME('%w', DATETIME('now', 'localtime'))
                                AND hour = STRFTIME('%H', DATETIME('now', 'localtime'));");
 
+switch (date("n")) {
+    case 3:
+    case 4:
+    case 10:
+        $tempSet -= 3;
+        break;
+    case 5:
+    case 6:
+    case 9:
+        $tempSet -= 5;
+        break;
+    case 7:
+    case 8:
+        $tempSet -= 10;
+        break;
+}
+
 $tempHumidIn = explode('|', exec($path ."/heating/DHT.py"));
 $tempIn = $tempHumidIn[0];
 $humidIn = round($tempHumidIn[1], 0);
