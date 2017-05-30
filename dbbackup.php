@@ -5,7 +5,8 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 $path = dirname(__FILE__);
 $configglobss = parse_ini_file($path .'/configglobs.ini');
 
-$query = $dbhandle->query('SELECT rowid, name FROM states');
+$db    = new SQLite3($path .'/var/hbrain.db');
+$query = $db->query('SELECT rowid, name FROM states');
 
 while ($entry = $query->fetch(SQLITE_ASSOC)) {
     var_dump($entry);
