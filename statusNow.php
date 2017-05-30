@@ -11,7 +11,7 @@ $status = $sqliteres->fetchArray(SQLITE3_ASSOC);
 $status = $status['status'];
 
 
-$sqliteres = $sqlitedb->query("SELECT * FROM states ORDER BY rowid ASC");
+$sqliteres = $sqlitedb->query("SELECT rowid, * FROM states ORDER BY rowid ASC");
 while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
 {
     $states[$entry['rowid']] = $entry['name'];
