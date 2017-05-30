@@ -9,8 +9,9 @@ $db    = new SQLite3($path .'/var/hbrain.db');
 $query = $db->query('SELECT rowid, name FROM states;');
 
 while ($entry = $query->fetchArray(SQLITE3_ASSOC)) {
-    var_dump($entry);
+    $states[$entry['id']] = $entry['name'];
 }
+    var_dump($states);
 exit();
 $output = '';
 exec('sqlite3 '. $path .'/var/heating.db \'.dump changelog\' | grep \'^INSERT\'', $output);
