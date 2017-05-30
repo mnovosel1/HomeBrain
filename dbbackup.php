@@ -29,7 +29,6 @@ $sql .= "
             statebefore varchar(30) NOT NULL,
             stateid int(11) NOT NULL,
             changedto int(1) NOT NULL,
-            weight int(11) NOT NULL DEFAULT 1,
             PRIMARY KEY(statebefore, stateid, changedto),
             FOREIGN KEY (stateid) REFERENCES states(rowid)
         );
@@ -41,15 +40,14 @@ $sql .= "
             FOR EACH ROW
             WHEN OLD.active <> NEW.active
             BEGIN
-                INSERT OR REPLACE INTO changelog (timestamp, statebefore, stateid, changedto, weight)
+                INSERT OR REPLACE INTO changelog (timestamp, statebefore, stateid, changedto)
                 VALUES (
                             datetime('now','localtime'), 
                             (SELECT group_concat(active, '') FROM states ORDER BY rowid ASC), 
                             NEW.rowid, 
-                            NEW.active, 
-                            (SELECT weight+1 FROM changelog WHERE statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC) AND stateid=NEW.rowid AND changedto=NEW.active)
+                            NEW.active
                         );
-                DELETE FROM changelog WHERE timestamp <= date('now', '-30 day');
+                DELETE FROM changelog WHERE timestamp <= date('now', '-90 day');
             END;
 
 ";
@@ -61,8 +59,9 @@ foreach ( $output as $line )
 
 $sql .= "
         CREATE VIEW logic AS 
-            SELECT c.weight, c.statebefore, c.changedto, s.name
+            SELECT COUNT(*) AS weight, c.statebefore, c.changedto, s.name
                 FROM changelog c join states s ON c.stateid=s.rowid
+                GROUP BY c.statebefore, c.stateid, c.changedto
                 ORDER BY c.weight desc, c.timestamp desc;
 
 ";
