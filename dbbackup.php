@@ -5,24 +5,23 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 $path = dirname(__FILE__);
 $configglobss = parse_ini_file($path .'/configglobs.ini');
 
-$db    = new SQLite3($path .'/var/hbrain.db');
-$query = $db->query('SELECT rowid, name FROM states;');
+$sqlitedb = new SQLite3($path .'/var/hbrain.db');
+$mysqlidb = new mysqli($configglobss["DB_REPLIC_HOST"], $configglobss["DB_REPLIC_USER"], $configglobss["DB_REPLIC_PASS"], $configglobss["DB_REPLIC_DBNAME"]);
 
-while ($entry = $query->fetchArray(SQLITE3_ASSOC)) {
-    $states[$entry['rowid']] = $entry['name'];
+$sqliteres = $sqlitedb->query('SELECT c.timestamp, c.statebefore, c.changedto, s.name state FROM changelog c JOIN states s ON c.stateid = s.rowid;');
+
+while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC)) {
+    $mysqlidb->query("INSERT INTO changeLog (timestamp, statebefore, state, changedto) 
+                        VALUES (
+                                ".$entry['timestamp'].",
+                                ".$entry['statebefore'].",
+                                ".$entry['state'].",
+                                ".$entry['changedto'].",
+                                )");
 }
-    var_dump($states);
-exit();
-$output = '';
-exec('sqlite3 '. $path .'/var/heating.db \'.dump changelog\' | grep \'^INSERT\'', $output);
 
-$sql = '';
-foreach ( $output as $line )
-  $sql .= $line . "\n";
-$mysqli = new mysqli($configglobss["DB_REPLIC_HOST"], $configglobss["DB_REPLIC_USER"], $configglobss["DB_REPLIC_PASS"], $configglobss["DB_REPLIC_DBNAME"]);
-$multisql = str_replace('INSERT INTO "changelog"', 'REPLACE INTO changeLog', $sql);
-$mysqli->multi_query($multisql);
-$mysqli->close();
+$sqlitedb->close();
+$mysqlidb->close();
 
 // HBRAIN //////////////////////////////////////////////////////////////////////////////////
 $sql = "
@@ -69,11 +68,6 @@ $sql .= "
             END;
 
 ";
-
-$output = '';
-exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "changelog"\' | grep \'^INSERT\'', $output);
-foreach ( $output as $line )
-  $sql .= "        ".$line . "\n";
 
 $sql .= "
         CREATE VIEW logic AS 
