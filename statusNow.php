@@ -17,7 +17,7 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     $states[$entry['rowid']] = $entry['name'];
 }
 
-echo "|";
+echo "now: |";
 for ($i=1; $i <= strlen($status); $i++)
 { 
     if ( $status[$i-1] == 1 )
@@ -26,5 +26,10 @@ for ($i=1; $i <= strlen($status); $i++)
         echo "|";
     }
 }
+echo PHP_EOL;
 
+
+$sqliteres = $sqlitedb->query("SELECT * FROM logic WHERE statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)");
+echo $sqliteres->numColumns();
+//echo "should I: |"
 ?>
