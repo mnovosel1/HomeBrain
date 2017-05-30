@@ -22,7 +22,7 @@ for ($i=1; $i <= strlen($status); $i++)
     if ( $status[$i] == 1 )
     {
         echo $states[$i];
-        echo "\n";
+        echo "|";
     }
 }
 
