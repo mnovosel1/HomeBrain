@@ -6,9 +6,9 @@ $path = dirname(__FILE__);
 $configglobss = parse_ini_file($path .'/configglobs.ini');
 
 $db    = new SQLite3($path .'/var/hbrain.db');
-$query = $db->query('SELECT rowid, name FROM states');
+$query = $db->query('SELECT rowid, name FROM states;');
 
-while ($entry = $query->fetch(SQLITE_ASSOC)) {
+while ($entry = $query->fetch(SQLITE_NUM)) {
     var_dump($entry);
 }
 exit();
