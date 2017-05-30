@@ -17,6 +17,13 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     $states[$entry['rowid']] = $entry['name'];
 }
 
-var_dump($states);
+foreach ( $status as $k => $s )
+{
+    if ( $s == 1 )
+    {
+        echo $states[$k];
+        echo "\n";
+    }
+}
 
 ?>
