@@ -5,6 +5,22 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 $path = dirname(__FILE__);
 $configglobss = parse_ini_file($path .'/configglobs.ini');
 
+$query = $dbhandle->query('SELECT rowid, name FROM states');
+
+while ($entry = $query->fetch(SQLITE_ASSOC)) {
+    var_dump($entry);
+}
+exit();
+$output = '';
+exec('sqlite3 '. $path .'/var/heating.db \'.dump changelog\' | grep \'^INSERT\'', $output);
+
+$sql = '';
+foreach ( $output as $line )
+  $sql .= $line . "\n";
+$mysqli = new mysqli($configglobss["DB_REPLIC_HOST"], $configglobss["DB_REPLIC_USER"], $configglobss["DB_REPLIC_PASS"], $configglobss["DB_REPLIC_DBNAME"]);
+$multisql = str_replace('INSERT INTO "changelog"', 'REPLACE INTO changeLog', $sql);
+$mysqli->multi_query($multisql);
+$mysqli->close();
 
 // HBRAIN //////////////////////////////////////////////////////////////////////////////////
 $sql = "
