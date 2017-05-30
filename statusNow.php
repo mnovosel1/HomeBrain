@@ -42,5 +42,5 @@ if ( $num[0] > 0 )
         echo "|";
     }
 }
-
+echo PHP_EOL;
 ?>
