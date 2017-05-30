@@ -17,6 +17,7 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     $states[$entry['rowid']] = $entry['name'];
 }
 
+echo "|";
 for ($i=1; $i <= strlen($status); $i++)
 { 
     if ( $status[$i] == 1 )
