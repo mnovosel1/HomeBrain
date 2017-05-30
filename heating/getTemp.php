@@ -16,17 +16,15 @@ $tempSet = $db->querySingle("SELECT temp
 switch (date("n")) {
     case 3:
     case 4:
-    case 10:
-        $tempSet -= 3;
-        break;
     case 5:
-    case 6:
-    case 9:
+    case 10:
         $tempSet -= 5;
         break;
+    case 6:
     case 7:
     case 8:
-        $tempSet -= 10;
+    case 9:
+        $tempSet = $configs["TEMPSET_MIN"];
         break;
 }
 
