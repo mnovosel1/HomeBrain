@@ -11,7 +11,6 @@ $mysqlidb = new mysqli($configglobss["DB_REPLIC_HOST"], $configglobss["DB_REPLIC
 $sqliteres = $sqlitedb->query('SELECT c.timestamp, c.statebefore, c.changedto, s.name state FROM changelog c JOIN states s ON c.stateid = s.rowid;');
 
 while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC)) {
-    var_dump($entry);
     $mysqlidb->query("INSERT INTO changeLog (timestamp, statebefore, state, changedto) 
                         VALUES (
                                 ".$entry['timestamp'].",
@@ -19,6 +18,13 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC)) {
                                 ".$entry['state'].",
                                 ".$entry['changedto'].",
                                 )");
+echo "INSERT INTO changeLog (timestamp, statebefore, state, changedto) 
+                        VALUES (
+                                ".$entry['timestamp'].",
+                                ".$entry['statebefore'].",
+                                ".$entry['state'].",
+                                ".$entry['changedto'].",
+                                )";
 }
 
 $sqlitedb->close();
