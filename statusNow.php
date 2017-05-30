@@ -29,7 +29,8 @@ for ($i=1; $i <= strlen($status); $i++)
 echo PHP_EOL;
 
 
-$sqliteres = $sqlitedb->query("SELECT * FROM logic WHERE statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)");
-var_dump($sqliteres->numColumns());
+$sqliteres = $sqlitedb->query("SELECT COUNT(*) FROM logic WHERE statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)");
+$num = $sqliteres->fetchArray();
+var_dump($num);
 //echo "should I: |"
 ?>
