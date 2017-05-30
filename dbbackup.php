@@ -13,18 +13,11 @@ $sqliteres = $sqlitedb->query('SELECT c.timestamp, c.statebefore, c.changedto, s
 while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC)) {
     $mysqlidb->query("INSERT INTO changeLog (timestamp, statebefore, state, changedto) 
                         VALUES (
-                                ".$entry['timestamp'].",
-                                ".$entry['statebefore'].",
-                                ".$entry['state'].",
+                                '".$entry['timestamp']."',
+                                '".$entry['statebefore']."',
+                                '".$entry['state']."',
                                 ".$entry['changedto'].",
                                 )");
-echo "INSERT INTO changeLog (timestamp, statebefore, state, changedto) 
-                        VALUES (
-                                ".$entry['timestamp'].",
-                                ".$entry['statebefore'].",
-                                ".$entry['state'].",
-                                ".$entry['changedto'].",
-                                )";
 }
 
 $sqlitedb->close();
