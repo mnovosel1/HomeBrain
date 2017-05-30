@@ -14,17 +14,22 @@ $tempSet = $db->querySingle("SELECT temp
                                AND hour = STRFTIME('%H', DATETIME('now', 'localtime'));");
 
 switch (date("n")) {
-    case 3:
     case 4:
+        $tempSet -= 2;
+        break;
     case 5:
-    case 10:
-        $tempSet -= 5;
+        $tempSet -= 4;
         break;
     case 6:
     case 7:
     case 8:
-    case 9:
         $tempSet = $configs["TEMPSET_MIN"];
+        break;
+    case 9:
+        $tempSet -= 4;
+        break;
+    case 10:
+        $tempSet -= 2;
         break;
 }
 
