@@ -53,7 +53,5 @@ if ( true || date("i")%5 == 0 ) {
   $tempOut = exec('/usr/bin/php '.$path.'/heating/getOutTemp.php');
 }
 
-if ( $tempOut > 16 ) $tempSet = 0;
-
 echo $oldLog ."|". $tempSet ."|". $tempIn ."|". $tempOut ."|". $heatingOn ."|". $humidIn;
 ?>
