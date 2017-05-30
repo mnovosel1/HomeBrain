@@ -19,7 +19,13 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC)) {
                                 ".$entry['changedto'].",
                                 )");
 }
-
+echo "INSERT INTO changeLog (timestamp, statebefore, state, changedto) 
+                        VALUES (
+                                '".$entry['timestamp']."',
+                                '".$entry['statebefore']."',
+                                '".$entry['state']."',
+                                ".$entry['changedto'].",
+                                )";
 $sqlitedb->close();
 $mysqlidb->close();
 
