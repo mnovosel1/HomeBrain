@@ -17,11 +17,11 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     $states[$entry['rowid']] = $entry['name'];
 }
 
-foreach ( $status as $k => $s )
-{
-    if ( $s == 1 )
+for ($i=1; $i <= strlen($status); $i++)
+{ 
+    if ( $status[$i] == 1 )
     {
-        echo $states[$k];
+        echo $states[$i];
         echo "\n";
     }
 }
