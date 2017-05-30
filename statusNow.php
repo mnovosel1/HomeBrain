@@ -34,7 +34,7 @@ $num = $sqliteres->fetchArray();
 
 if ( $num[0] > 0 )
 {
-    echo "should I: |";
+    echo "should I be: |";
     $sqliteres = $sqlitedb->query("SELECT name FROM logic WHERE statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)");
     while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     {
