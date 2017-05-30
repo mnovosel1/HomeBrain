@@ -30,6 +30,6 @@ echo PHP_EOL;
 
 
 $sqliteres = $sqlitedb->query("SELECT * FROM logic WHERE statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)");
-echo $sqliteres->numColumns();
+var_dump($sqliteres->numColumns());
 //echo "should I: |"
 ?>
