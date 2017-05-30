@@ -74,7 +74,7 @@ $sql .= "
             SELECT COUNT(*) AS weight, c.statebefore, c.changedto, s.name
                 FROM changelog c join states s ON c.stateid=s.rowid
                 GROUP BY c.statebefore, c.stateid, c.changedto
-                ORDER BY c.weight desc, c.timestamp desc;
+                ORDER BY weight desc, c.timestamp desc;
 
 ";
 
