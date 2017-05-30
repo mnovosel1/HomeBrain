@@ -17,7 +17,7 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     $states[$entry['rowid']] = $entry['name'];
 }
 
-echo "now: |";
+echo "Now: |";
 for ($i=1; $i <= strlen($status); $i++)
 { 
     if ( $status[$i-1] == 1 )
@@ -34,7 +34,7 @@ $num = $sqliteres->fetchArray();
 
 if ( $num[0] > 0 )
 {
-    echo "should I be: |";
+    echo "should I: |";
     $sqliteres = $sqlitedb->query("SELECT name FROM logic WHERE statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)");
     while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     {
