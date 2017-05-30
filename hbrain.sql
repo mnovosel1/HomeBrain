@@ -7,13 +7,14 @@
             active int(1) NOT NULL DEFAULT 0
         );
 
-        INSERT INTO "states" VALUES('KODI',1,1);
-        INSERT INTO "states" VALUES('HomeServer',1,0);
+        INSERT INTO "states" VALUES('KODI',1,0);
+        INSERT INTO "states" VALUES('HomeServer',1,1);
         INSERT INTO "states" VALUES('HomeBrain user',0,1);
-        INSERT INTO "states" VALUES('HomeServer user',0,0);
+        INSERT INTO "states" VALUES('HomeServer user',0,1);
         INSERT INTO "states" VALUES('TV recording',0,0);
         INSERT INTO "states" VALUES('Torrenting',0,1);
-        INSERT INTO "states" VALUES('MPD playing',1,1);
+        INSERT INTO "states" VALUES('MPD playing',1,0);
+        INSERT INTO "states" VALUES('Heating',1,0);
 
         CREATE TABLE changelog (
             timestamp DATETIME,
