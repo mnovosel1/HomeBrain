@@ -8,14 +8,15 @@ $configglobss = parse_ini_file($path .'/configglobs.ini');
 $sqlitedb = new SQLite3($path .'/var/hbrain.db');
 $mysqlidb = new mysqli($configglobss["DB_REPLIC_HOST"], $configglobss["DB_REPLIC_USER"], $configglobss["DB_REPLIC_PASS"], $configglobss["DB_REPLIC_DBNAME"]);
 
-$sqliteres = $sqlitedb->query('SELECT c.timestamp, c.statebefore, c.changedto, s.name state FROM changelog c JOIN states s ON c.stateid = s.rowid;');
+$sqliteres = $sqlitedb->query('SELECT c.timestamp, c.statebefore, c.changedto, s.name state, s.auto FROM changelog c JOIN states s ON c.stateid = s.rowid;');
 
 while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC)) {
-    $mysqlidb->query("REPLACE INTO changeLog (timestamp, statebefore, state, changedto) 
+    $mysqlidb->query("REPLACE INTO changeLog (timestamp, statebefore, state, auto, changedto) 
                         VALUES (
                                 '".$entry['timestamp']."',
                                 '".$entry['statebefore']."',
                                 '".$entry['state']."',
+                                '".$entry['auto']."',
                                 ".$entry['changedto']."
                                 )");
 }
@@ -64,14 +65,21 @@ $sql .= "
                             NEW.rowid, 
                             NEW.active
                         );
-                DELETE FROM changelog WHERE timestamp <= date('now', '-90 day');
+                DELETE FROM changelog WHERE timestamp <= date('now', '-60 day');
             END;
 
 ";
 
 $sql .= "
         CREATE VIEW logic AS 
-            SELECT COUNT(*) AS weight, c.statebefore, c.changedto, s.name, s.auto
+            SELECT 
+                    COUNT(*) AS weight, 
+                    STRFTIME('%H', timestamp)*1 AS hour,
+                    STRFTIME('%w', timestamp)*1 AS dow,
+                    c.statebefore, 
+                    c.changedto, 
+                    s.name, 
+                    s.auto
                 FROM changelog c join states s ON c.stateid=s.rowid
                 GROUP BY c.statebefore, c.stateid, c.changedto
                 ORDER BY weight desc, c.timestamp desc;
