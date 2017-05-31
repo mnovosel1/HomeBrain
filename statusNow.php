@@ -6,9 +6,6 @@ $path = dirname(__FILE__);
 
 $sqlitedb = new SQLite3($path .'/var/hbrain.db');
 
-$sqliteres = $sqlitedb->query("SELECT COUNT(*) FROM logic WHERE auto=1 AND statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)");
-$num = $sqliteres->fetchArray();
-
 $sqliteres = $sqlitedb->query("SELECT group_concat(active, '') status FROM states ORDER BY rowid ASC");
 
 $status = $sqliteres->fetchArray(SQLITE3_ASSOC);
@@ -32,10 +29,25 @@ for ($i=1; $i <= strlen($status); $i++)
 }
 echo PHP_EOL;
 
+$sqliteres = $sqlitedb->query("SELECT COUNT(*) FROM logic 
+                                WHERE auto=1
+                                 AND hour=STRFTIME('%H', 'now)*1,
+                                 AND wday=STRFTIME('%w', 'now')*1,
+                                 AND statebefore=(SELECT group_concat(active, '') 
+                                FROM states ORDER BY rowid ASC)"
+                            );
+$num = $sqliteres->fetchArray();
+
 if ( $num[0] > 0 )
 {
     echo "should I: |";
-    $sqliteres = $sqlitedb->query("SELECT name FROM logic WHERE auto=1 AND statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)");
+    $sqliteres = $sqlitedb->query("SELECT name FROM logic
+                                    WHERE auto=1
+                                     AND hour=STRFTIME('%H', 'now)*1,
+                                     AND wday=STRFTIME('%w', 'now')*1,
+                                     AND statebefore=(SELECT group_concat(active, '') 
+                                    FROM states ORDER BY rowid ASC)"
+                                );
     while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     {
         echo $entry['name'];
