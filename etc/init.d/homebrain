@@ -28,9 +28,7 @@ PIDFILE=/var/run/$DAEMON_NAME.pid
 
 do_start () {
     log_daemon_msg "Starting system $DAEMON_NAME daemon"
-    $DIR/_init.sh
-    $DIR/lan/_init.sh
-    $DIR/heating/_init.sh
+    $DIR/_tools/init.sh
     start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --chuid $DAEMON_USER --startas $DAEMON -- $DAEMON_OPTS
     log_end_msg $?
 }
