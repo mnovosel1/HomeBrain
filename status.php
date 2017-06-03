@@ -4,6 +4,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 $path = dirname(__FILE__);
 $ret = array();
+$retBOOL = false;
 
 $sqlitedb = new SQLite3($path .'/var/hbrain.db');
 
@@ -24,8 +25,9 @@ for ($i=1; $i <= strlen($status); $i++)
     if ( $status[$i-1] == 1 )
     {
         $ret[] = $states[$i];
+        $retBOOL = true;
     }
 }
 
-echo json_encode($ret);
+if ( $retBOOL ) echo json_encode($ret);
 ?>

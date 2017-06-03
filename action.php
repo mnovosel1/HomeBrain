@@ -4,6 +4,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 $path = dirname(__FILE__);
 $ret = array();
+$retBOOL = false;
 
 $sqlitedb = new SQLite3($path .'/var/hbrain.db');
 
@@ -25,8 +26,9 @@ if ( $num[0] > 0 )
     while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     {
         $ret[] = $entry['name'];
+        $retBOOL = true;
     }
 }
 
-echo json_encode($ret);
+if ( $retBOOL ) echo json_encode($ret);
 ?>
