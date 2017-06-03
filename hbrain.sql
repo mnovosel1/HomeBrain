@@ -8,9 +8,17 @@
         );
 
         INSERT INTO "states" VALUES('KODI',1,0);
-        INSERT INTO "states" VALUES('HomeServer',1,1);
-        INSERT INTO "states" VALUES('HomeBrain user',0,1);
-        INSERT INTO "states" VALUES('HomeServer user',0,1);
+        INSERT INTO "states" VALUES('HomeServer',1,0);
+        INSERT INTO "states" VALUES('HomeBrain user',0,0);
+        INSERT INTO "states" VALUES('HomeServer user',0,0);
+        INSERT INTO "states" VALUES('TV recording',0,0);
+        INSERT INTO "states" VALUES('Torrenting',0,1);
+        INSERT INTO "states" VALUES('MPD playing',1,0);
+        INSERT INTO "states" VALUES('Heating',1,0);
+        INSERT INTO "states" VALUES('KODI',1,0);
+        INSERT INTO "states" VALUES('HomeServer',1,0);
+        INSERT INTO "states" VALUES('HomeBrain user',0,0);
+        INSERT INTO "states" VALUES('HomeServer user',0,0);
         INSERT INTO "states" VALUES('TV recording',0,0);
         INSERT INTO "states" VALUES('Torrenting',0,1);
         INSERT INTO "states" VALUES('MPD playing',1,0);
@@ -37,12 +45,19 @@
                             NEW.rowid, 
                             NEW.active
                         );
-                DELETE FROM changelog WHERE timestamp <= date('now', '-90 day');
+                DELETE FROM changelog WHERE timestamp <= date('now', '-60 day');
             END;
 
 
         CREATE VIEW logic AS 
-            SELECT COUNT(*) AS weight, c.statebefore, c.changedto, s.name
+            SELECT 
+                    COUNT(*) AS weight, 
+                    STRFTIME('%H', timestamp)*1 AS hour,
+                    STRFTIME('%w', timestamp)*1 AS dow,
+                    c.statebefore, 
+                    c.changedto, 
+                    s.name, 
+                    s.auto
                 FROM changelog c join states s ON c.stateid=s.rowid
                 GROUP BY c.statebefore, c.stateid, c.changedto
                 ORDER BY weight desc, c.timestamp desc;
