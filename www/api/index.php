@@ -9,4 +9,6 @@ if ( strpos($_SERVER['REMOTE_ADDR'], ALLOWED_SUBNET) === false )
 }
 
 passthru('../../status.php', $ret);
-echo $ret;
+
+var_dump($ret);
+//echo $ret;
