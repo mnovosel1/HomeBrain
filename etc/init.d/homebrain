@@ -11,7 +11,7 @@
 
 # Change the next 3 lines to suit where you install your script and what you want to call it
 DIR=/srv/HomeBrain
-DAEMON=$DIR/HomeBraind
+DAEMON=$DIR/HomeBrain.d
 DAEMON_NAME=HomeBrain
 
 # Add any command line options for your daemon here
@@ -28,9 +28,9 @@ PIDFILE=/var/run/$DAEMON_NAME.pid
 
 do_start () {
     log_daemon_msg "Starting system $DAEMON_NAME daemon"
-    $DIR/init.sh
-    $DIR/lan/init.sh
-    $DIR/heating/init.sh
+    $DIR/_init.sh
+    $DIR/lan/_init.sh
+    $DIR/heating/_init.sh
     start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --chuid $DAEMON_USER --startas $DAEMON -- $DAEMON_OPTS
     log_end_msg $?
 }
