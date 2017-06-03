@@ -3,7 +3,7 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 $path = dirname(__FILE__);
-$ret = '';
+$actions = array();
 
 $sqlitedb = new SQLite3($path .'/var/hbrain.db');
 
@@ -24,11 +24,9 @@ if ( $num[0] > 0 )
                                 );
     while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     {
-        $ret .= $entry['name'];
-        $ret .= "|";
+        $actions[] = $entry['name'];
     }
-    $ret .= PHP_EOL;
 }
 
-echo substr($ret, 0, -1) . PHP_EOL;
+echo json_encode($actions);
 ?>
