@@ -62,7 +62,7 @@ if [ $((serverlive)) -gt 0 ]; then
   fi
   sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$active WHERE name='HomeServer user'";
 
-  if [ $(/usr/bin/ssh 10.10.10.100 "transmission-remote --list | sed '1d;$d' | grep -v Done | wc -l") -gt 0 ]; then
+  if [ $(/usr/bin/ssh 10.10.10.100 "/root/chkTorrenting.sh") -gt 0 ]; then
     active=1
   else
     active=0
