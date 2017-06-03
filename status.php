@@ -3,6 +3,7 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 $path = dirname(__FILE__);
+$ret = '';
 
 $sqlitedb = new SQLite3($path .'/var/hbrain.db');
 
@@ -18,37 +19,14 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     $states[$entry['rowid']] = $entry['name'];
 }
 
-echo "Now I'm: |";
 for ($i=1; $i <= strlen($status); $i++)
 { 
     if ( $status[$i-1] == 1 )
     {
-        echo $states[$i];
-        echo "|";
+        $ret .= $states[$i];
+        $ret .= "|";
     }
 }
-echo PHP_EOL;
 
-$sqliteres = $sqlitedb->query("SELECT COUNT(*) FROM logic 
-                                WHERE auto=1
-                                 AND hour=STRFTIME('%H', 'now')
-                                 AND statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)"
-                            );
-$num = $sqliteres->fetchArray();
-
-if ( $num[0] > 0 )
-{
-    echo "should I: |";
-    $sqliteres = $sqlitedb->query("SELECT name FROM logic
-                                    WHERE auto=1
-                                     AND hour=STRFTIME('%H', 'now')
-                                     AND statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)"
-                                );
-    while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
-    {
-        echo $entry['name'];
-        echo "|";
-    }
-    echo PHP_EOL;
-}
+echo substr($ret, 0, -1) . PHP_EOL;
 ?>

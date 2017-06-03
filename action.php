@@ -30,5 +30,5 @@ if ( $num[0] > 0 )
     $ret .= PHP_EOL;
 }
 
-echo $ret;
+echo substr($ret, 0, -1) . PHP_EOL;
 ?>
