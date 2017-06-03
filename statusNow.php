@@ -31,7 +31,7 @@ echo PHP_EOL;
 
 $sqliteres = $sqlitedb->query("SELECT COUNT(*) FROM logic 
                                 WHERE auto=1
-                                 AND hour=STRFTIME('%H', 'now)
+                                 AND hour=STRFTIME('%H', 'now')
                                  AND wday=STRFTIME('%w', 'now')
                                  AND statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)"
                             );
