@@ -32,7 +32,7 @@ echo PHP_EOL;
 $sqliteres = $sqlitedb->query("SELECT COUNT(*) FROM logic 
                                 WHERE auto=1
                                  AND hour=STRFTIME('%H', 'now')
-                                 AND wday=STRFTIME('%w', 'now')
+                                 AND dow=STRFTIME('%w', 'now')
                                  AND statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)"
                             );
 $num = $sqliteres->fetchArray();
@@ -43,7 +43,7 @@ if ( $num[0] > 0 )
     $sqliteres = $sqlitedb->query("SELECT name FROM logic
                                     WHERE auto=1
                                      AND hour=STRFTIME('%H', 'now')*1
-                                     AND wday=STRFTIME('%w', 'now')*1
+                                     AND dow=STRFTIME('%w', 'now')*1
                                      AND statebefore=(SELECT group_concat(active, '') FROM states ORDER BY rowid ASC)"
                                 );
     while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
