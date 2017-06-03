@@ -43,7 +43,6 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC))
 }
 
 $db->query("UPDATE tempConf SET temp=". $configs['TEMPSET_NIGHT'] ." WHERE hour<6;");
-
 $mysqlSQL .= "UPDATE tempConf SET temp=". $configs['TEMPSET_NIGHT'] ." WHERE hour<6;";
 
 $mysqli = new mysqli($configs["DB_REPLIC_HOST"], $configs["DB_REPLIC_USER"], $configs["DB_REPLIC_PASS"], $configs["DB_REPLIC_DBNAME"]);

@@ -6,8 +6,7 @@ curl_setopt($handle, CURLOPT_URL, "http://vrijeme.hr/aktpod.php?id=hrvatska1_n")
 curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
 $html = curl_exec($handle);
 curl_close($handle);
-	
-	//var_dump($html);
+
 	
 $newDom = new domDocument;
 
