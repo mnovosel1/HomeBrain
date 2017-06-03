@@ -3,7 +3,7 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 $path = dirname(__FILE__);
-$ret = '';
+$ret = array();
 
 $sqlitedb = new SQLite3($path .'/var/hbrain.db');
 
@@ -23,10 +23,9 @@ for ($i=1; $i <= strlen($status); $i++)
 { 
     if ( $status[$i-1] == 1 )
     {
-        $ret .= $states[$i];
-        $ret .= "|";
+        $ret[] = $states[$i];
     }
 }
 
-echo substr($ret, 0, -1) . PHP_EOL;
+echo json_encode($ret);
 ?>
