@@ -1,9 +1,14 @@
 #!/bin/bash
 
-/srv/HomeBrain/dbbackup.php
-/srv/HomeBrain/lan/dbbackup.php
-/srv/HomeBrain/heating/getTempSet.php
-/srv/HomeBrain/heating/dbbackup.php
+cd "$(dirname "$0")";
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/_tools/dbBackup.php
+
+$DIR/lan/dbBackup.php
+
+$DIR/heating/getTempSet.php
+$DIR/heating/dbBackup.php
 
 
 /sbin/shutdown -r now

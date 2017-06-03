@@ -1,6 +1,6 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. $DIR/heating/config.ini
+. $DIR/config.ini
 
 
 hour=$(( $((10#$(date +'%H')))*1 ))
