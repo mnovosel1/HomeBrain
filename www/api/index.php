@@ -8,7 +8,4 @@ if ( strpos($_SERVER['REMOTE_ADDR'], ALLOWED_SUBNET) === false )
 	exit();
 }
 
-passthru('../../status.php', $ret);
-
-var_dump($ret);
-//echo $ret;
+passthru('../../status.php');
