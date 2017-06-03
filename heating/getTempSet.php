@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 $path = str_replace('/heating', '', dirname(__FILE__));
-$configs = parse_ini_file($path .'/heating/config.ini');
+$configs = parse_ini_file($path .'/config.ini');
 
 $db         = new SQLite3($path .'/var/heating.db');
 $wday       = ((date("w")-1) < 0) ? 6 : (date("w")-1);
@@ -45,7 +45,8 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC))
 $db->query("UPDATE tempConf SET temp=". $configs['TEMPSET_NIGHT'] ." WHERE hour<6;");
 
 $mysqlSQL .= "UPDATE tempConf SET temp=". $configs['TEMPSET_NIGHT'] ." WHERE hour<6;";
-$mysqli = new mysqli("bubulescu.org", "bubul_mn", "5tNjxtteikhqVito6Yv5", "bubul_housebrain");
+
+$mysqli = new mysqli($configs["DB_REPLIC_HOST"], $configs["DB_REPLIC_USER"], $configs["DB_REPLIC_PASS"], $configs["DB_REPLIC_DBNAME"]);
 $mysqli->multi_query($mysqlSQL);
 $mysqli->close();
 
