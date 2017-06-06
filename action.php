@@ -37,12 +37,12 @@ $num = $sqliteres->fetchArray();
 
 if ( $num[0] > 0 )
 {
-    $sqliteres = $sqlitedb->query("SELECT name FROM logic
+    $sqliteres = $sqlitedb->query("SELECT name, changedto FROM logic
                                 WHERE auto=1 " . $sql . $sql_end
                                 );
     while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
     {
-        $ret[] = $entry['name'];
+        $ret[] = array($entry['name'] => $entry['changedto']);
         $retBOOL = true;
     }
 }
