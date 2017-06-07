@@ -24,7 +24,7 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
 
 for ($i=1; $i <= strlen($status); $i++)
 { 
-    $ret['status'][] = array($states[$i] => $status[$i-1]*1);
+    $ret['status'][] = array($states[$i] => (int)$status[$i-1]);
 }
 
 // ACTION /////////////////////////////////////////////////////////////////////////////////////////////////////
