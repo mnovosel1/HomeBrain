@@ -1,8 +1,12 @@
 #!/bin/bash
 
 mpc clear
-mpc add http://192.240.102.131:9107/
-mpc play
+mpc repeat on
+mpc random off
+mpc single off
+mpc consume off
+mpc load radio
+mpc play 1
 
 irsend SEND_ONCE Yamaha SYSTEM_POWER
 sleep 1;
