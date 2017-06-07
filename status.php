@@ -22,12 +22,8 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
 
 for ($i=1; $i <= strlen($status); $i++)
 { 
-    if ( $status[$i-1] == 1 )
-    {
-        $ret[] = $states[$i];
-        $retBOOL = true;
-    }
+    $ret[] = array($states[$i] => $status[$i-1]);
 }
 
-if ( $retBOOL ) echo json_encode($ret);
+echo json_encode($ret);
 ?>
