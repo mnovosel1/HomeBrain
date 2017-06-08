@@ -63,11 +63,11 @@ if [ $((serverlive)) -gt 0 ]; then
   sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$active WHERE name='HomeServer user'";
 
   if [ $(/usr/bin/ssh 10.10.10.100 "/root/chkTorrenting.sh") -gt 0 ]; then
-    active=1
+    torrentactive=1
   else
-    active=0
+    torrentactive=0
   fi
-  sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$active WHERE name='Torrenting'";
+  sqlite3 $DIR/var/hbrain.db "UPDATE states SET active=$torrentactive WHERE name='Torrenting'";
 fi
 
 nowtime=$(date +"%s");
@@ -86,8 +86,8 @@ if [ $((serverlive)) -lt 1 -a $((diff)) -gt 0 -a $((diff)) -lt 900 ]; then
   srvWake;
 fi
 
-# ako je server upaljen, kodi ugasen i timer veci od pola sata - ugasi server
-if [ $((serverlive)) -gt 0 -a $((kodilive)) -lt 1 -a $((diff)) -gt 1800 ]; then
+# ako je server upaljen, kodi ugasen, timer veci od pola sata i nema torrenta - ugasi server
+if [ $((serverlive)) -gt 0 -a $((kodilive)) -lt 1 -a $((diff)) -gt 1800 -a $((torrentactive)) -lt 1 ]; then
 	srvShut;
 fi
 
