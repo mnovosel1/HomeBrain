@@ -59,6 +59,6 @@ file_put_contents($path .'/heating/heating.sql', $sqlPre . $sql . $sqlPost);
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 $db = new SQLite3($path .'/var/heating.db'); 
-$db->query("DELETE FROM tempLog WHERE timestamp < datetime(datetime('now', 'localtime'), '-30 DAYS')");
+$db->query("DELETE FROM tempLog WHERE timestamp < datetime(datetime('now', 'localtime'), '-20 DAYS')");
 
 ?>

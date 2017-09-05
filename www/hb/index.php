@@ -41,7 +41,7 @@
             <?php
             error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-            $path = str_replace('/www', '', dirname(__FILE__));
+            $path = str_replace('/www/hb', '', dirname(__FILE__));
 
             $db = new SQLite3($path .'/var/lan.db'); 
 

@@ -1,5 +1,4 @@
 <?php
-
 /* WORKING DIR constant */
 define('DIR', str_replace('/www', '', dirname(__FILE__)));
 
@@ -28,11 +27,26 @@ class MyAPI extends API
         }
      }
 	 
+	 protected function fcm()
+	 {
+		if ( $this->method == 'PUT' )
+		{
+			$this->sqlite 	= new SQLite3(DIR .'/var/fcm.db');
+
+			switch ($this->verb)
+			{
+				case 'reg':
+					return $this->sqlite->query("INSERT INTO tokens VALUES(datetime('now', 'localtime'), '".$this->args[0]."')");
+				break;
+			}			
+		}
+	 }
 	 
     /* HomeServer Endpoint */
-	 protected function hsrv() {
-		 if ( strpos($_SERVER["HTTP_USER_AGENT"], 'homeserver/') !== false && $this->method == 'PUT' )
-		 {
+	 protected function hsrv()
+	 {
+		if ( $this->method == 'PUT' )
+		{
 			$this->sqlite 	= new SQLite3(DIR .'/var/hbrain.db');
 			$this->sqlite->query("UPDATE states SET active=1 WHERE name='HomeServer'");
 			
@@ -44,7 +58,12 @@ class MyAPI extends API
 			}
 		 }
 		 
-		 return false;		 
+		 return FALSE;		 
+	 }
+	 
+	 protected function html()
+	 {
+		 phpinfo();
 	 }
  }
 
@@ -55,11 +74,14 @@ if (!array_key_exists('HTTP_ORIGIN', $_SERVER)) {
     $_SERVER['HTTP_ORIGIN'] = $_SERVER['SERVER_NAME'];
 }
 
-try {
-    $API = new MyAPI($_REQUEST['request'], $_SERVER['HTTP_ORIGIN']);
-    echo $API->processAPI();
-} catch (Exception $e) {
-    echo json_encode(Array('error' => $e->getMessage()));
+if ( strpos($_SERVER["HTTP_USER_AGENT"],  'homeserver/') !== false || strpos($_SERVER["HTTP_USER_AGENT"],  'homebrainapp/') !== false || strpos($_SERVER["HTTP_USER_AGENT"],  'homebrainweb/') !== false )
+{
+	try {
+	    $API = new MyAPI($_REQUEST['request'], $_SERVER['HTTP_ORIGIN']);
+	    echo $API->processAPI();
+	} catch (Exception $e) {
+	    echo json_encode(Array('error' => $e->getMessage()));
+	}
 }
 
 ?>

@@ -33,7 +33,7 @@ switch (date("n")) {
         break;
 }
 
-$tempHumidIn = explode('|', exec($path ."/heating/DHT.py"));
+$tempHumidIn = explode('|', exec("sudo ".$path ."/heating/DHT.py"));
 $tempIn = $tempHumidIn[0];
 $humidIn = round($tempHumidIn[1], 0);
 
