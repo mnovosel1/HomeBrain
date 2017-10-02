@@ -5,7 +5,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 //exit();
 
 $path = str_replace('/heating', '', dirname(__FILE__));
-$configs = parse_ini_file($path .'/heating/config.ini');
+$configs = parse_ini_file($path .'/config.ini');
 
 $sendEmail  = false;
 $updateDb   = false;
