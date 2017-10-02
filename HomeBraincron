@@ -1,9 +1,0 @@
-#!/bin/bash
-
-/srv/HomeBrain/dbbackup.php
-/srv/HomeBrain/lan/dbbackup.php
-/srv/HomeBrain/heating/getTempSet.php
-/srv/HomeBrain/heating/dbbackup.php
-
-
-sudo /sbin/shutdown -r now
