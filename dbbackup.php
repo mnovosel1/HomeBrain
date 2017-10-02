@@ -41,6 +41,19 @@ exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "states"\' | grep \'^INSERT\'', 
 foreach ( $output as $line )
   $sql .= "        ".$line . "\n";
 
+$sql .= " 
+		CREATE TABLE fcm (
+			timestamp DATETIME,
+			token varchar(99) NOT NULL,
+			PRIMARY KEY(token)
+		);
+ ";
+
+$output = '';
+exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "fcm"\' | grep \'^INSERT\'', $output);
+foreach ( $output as $line )
+  $sql .= "        ".$line . "\n";
+  
 $sql .= "
         CREATE TABLE changelog (
             timestamp DATETIME,

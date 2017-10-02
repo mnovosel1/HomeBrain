@@ -7,15 +7,22 @@
             active int(1) NOT NULL DEFAULT 0
         );
 
-        INSERT INTO "states" VALUES('KODI',1,1);
-        INSERT INTO "states" VALUES('HomeServer',1,1);
+        INSERT INTO "states" VALUES('KODI',1,0);
+        INSERT INTO "states" VALUES('HomeServer',1,0);
+        INSERT INTO "states" VALUES('HomeServer busy',0,0);
         INSERT INTO "states" VALUES('HomeBrain user',0,1);
-        INSERT INTO "states" VALUES('HomeServer user',0,0);
-        INSERT INTO "states" VALUES('TV recording',0,0);
-        INSERT INTO "states" VALUES('Torrenting',0,0);
         INSERT INTO "states" VALUES('MPD playing',1,0);
         INSERT INTO "states" VALUES('Heating',1,0);
-        INSERT INTO "states" VALUES('Daily cron',0,1);
+
+ 
+		CREATE TABLE fcm (
+					timestamp DATETIME,
+					token varchar(99) NOT NULL,
+					PRIMARY KEY(token)
+				);
+
+        INSERT INTO "fcm" VALUES('2017-09-11 10:44:59','ezLt5t8albg:APA91bF4M3TtrD9GsiSU4flu0fh5owQ1cjhs6QipFezzTikcciHXcfcVU9junXiJGpeoqcjjumHGvNXOLVjjqxtGS_ms4m_mEo3w6_UBbUbHu0yXvPlyKk7Gx6YIJKsYtWcZdmlt8O3R');
+        INSERT INTO "fcm" VALUES('2017-09-11 10:46:41','fNbA8yNMjec:APA91bHeXEju30EbN6FMn2dBCCsohIheVhEjsWSzFNjO3QvcA8_ZH8crfV2PhGJ9TqR8MjC_DADL24xAhDrwtQfpYRH2HQAkEYTmgKYlW50Sgu8veKDJNkyQ-ZFEZcTMiS8UEDSNtvTu');
 
         CREATE TABLE changelog (
             timestamp DATETIME,

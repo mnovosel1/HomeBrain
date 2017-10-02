@@ -18,19 +18,25 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC))
 // funkcija koja šalje notifikacije //////////////
 function notify ($msg)
 {
-	exec(DIR . '/notify/fcm.py "' . $msg . '"');
-	exec(DIR . '/notify/kodi.php "' . $msg . '"');
+	$db = new SQLite3(DIR .'/var/log.db');
+	$db->query("INSERT INTO events VALUES(datetime('now', 'localtime'),'".$msg."'");
+	
+	exec(DIR . '/notify/fcm.php "' . $msg . '" &');
+	exec(DIR . '/notify/kodi.php "' . $msg . '" &');
 }
 //////////////////////////////////////////////////
 
 // HomeServer /////////////////////////////////////////////////////////////////////////////////////////
 $serverlive = exec("ping -c1 10.10.10.100 | grep 'received' | awk -F ',' '{print $2}' | awk '{ print $1}'");
-$db->query("UPDATE states SET active=".$serverlive." WHERE name='HomeServer'");
 
 if ( $serverlive != $table["HomeServer"] )
 {
+	$db->query("UPDATE states SET active=".$serverlive." WHERE name='HomeServer'");
 	$status = ($serverlive > 0) ? 'upaljen' : 'ugašen';
-	notify('HomeServer je ' . $status . '.');
+	notify('HomeServer je ' . $status . '.');	
+	
+	if ( $serverlive < 1 )
+		$db->query("UPDATE states SET active=0 WHERE name='HomeServer busy'");
 }
 
 if ( $serverlive > 0 )
@@ -40,27 +46,30 @@ if ( $serverlive > 0 )
 }
 else
 {
-	$db->query("UPDATE states SET active=0 WHERE name='HomeServer busy'");
 	$srvWakeTime = exec('cat '.DIR.'/var/srvWakeTime.log');
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // KODI ///////////////////////////////////////////////////////////////////////////////////////////////
 $kodilive = exec("ping -c1 10.10.10.20 | grep 'received' | awk -F ',' '{print $2}' | awk '{ print $1}'");
-$db->query("UPDATE states SET active=".$kodilive." WHERE name='KODI'");
+
 if ( $kodilive != $table["KODI"] )
 {
+	$db->query("UPDATE states SET active=".$kodilive." WHERE name='KODI'");
+	
 	$status = ($kodilive > 0) ? 'upaljen' : 'ugašen';
 	notify('KODI je ' . $status . '.');
-///////////////////////////////////////////////////////////////////////////////////////////////////////
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // HomeBrain user /////////////////////////////////////////////////////////////////////////////////////
 $hbrainuser = exec("who | wc -l");
 $hbrainuser = ($hbrainuser > 0) ? 1 : 0;
-$db->query("UPDATE states SET active=".$hbrainuser." WHERE name='HomeBrain user'");
+
 if ( $hbrainuser != $table["HomeBrain user"] )
 {	
+	$db->query("UPDATE states SET active=".$hbrainuser." WHERE name='HomeBrain user'");
+	
 	$status = ($hbrainuser > 0) ? 'prijavljen' : 'odjavljen';
 	notify('HomeBrain user je ' . $status . '.');
 }
@@ -69,9 +78,11 @@ if ( $hbrainuser != $table["HomeBrain user"] )
 // MPD player /////////////////////////////////////////////////////////////////////////////////////////
 $mpdplay = exec("mpc status | grep playing");
 $mpdplay = ($mpdplay == "") ? 0 : 1;
-$db->query("UPDATE states SET active=".$mpdplay." WHERE name='MPD playing'");
+
 if ( $mpdplay != $table["MPD playing"] )
 {	
+	$db->query("UPDATE states SET active=".$mpdplay." WHERE name='MPD playing'");
+	
 	$status = ($mpdplay > 0) ? 'svira' : 'je ugašen';
 	notify('MPD ' . $status . '.');
 }
@@ -97,6 +108,7 @@ if ( $serverlive < 1 )
 		case ( ($srvWakeTime - time()) <= 1800 ): // .. je srvWakeTime za pola sata ili manje
 		case ( $kodilive > 0 ): // .. je KODI upaljen
 			exec(DIR . "/lan/srvWake.sh;");
+			notify('Palim HomeServer.');
 		
 		default:
 			break;
@@ -115,6 +127,7 @@ else
 		
 		default:
 			exec(DIR . "/lan/srvShut.sh;");
+			notify('Gasim HomeServer.');
 		
 	}
 }

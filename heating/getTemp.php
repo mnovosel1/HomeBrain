@@ -58,5 +58,6 @@ if ( true || date("i")%5 == 0 ) {
   $tempOut = exec('/usr/bin/php '.$path.'/heating/getOutTemp.php');
 }
 
-echo $oldLog ."|". $tempSet ."|". $tempIn ."|". $tempOut ."|". $heatingOn ."|". $humidIn;
+echo $oldLog ."|". $tempSet ."|". $tempIn ."|". $tempOut ."|". $heatingOn ."|". $humidIn ."|". $configs["TEMPSET_FORCE"];
+
 ?>
