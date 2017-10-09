@@ -1,59 +1,41 @@
+
 <!DOCTYPE html>
-<html class="mdl-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
+<!--
+Copyright (c) 2016 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html>
+<head>
+  <meta charset=utf-8 />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="favicon.ico">
   <title>HomeBrain FCM</title>
 
   <!-- Material Design Theming -->
-  <link rel="stylesheet" href="./HomeBrain FCM_files/material.orange-indigo.min.css">
-  <link rel="stylesheet" href="./HomeBrain FCM_files/icon">
-  <script defer="" src="./HomeBrain FCM_files/material.min.js.download"></script>
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 
-  <link rel="stylesheet" href="./HomeBrain FCM_files/main.css">
+  <link rel="stylesheet" href="css/fcm.css">
 
-  <link rel="manifest" href="manifest.json">
-<script type="text/javascript">
-function rtcScript() {
-    document.oncontextmenu = null;
-    document.onselectstart = null;
-    document.onmousedown = null;
-    document.onclick = null;
-    document.oncopy = null;
-    document.oncut = null;
-    var elements = document.getElementsByTagName('*');
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].oncontextmenu = null;
-        elements[i].onselectstart = null;
-        elements[i].onmousedown = null;
-        elements[i].oncopy = null;
-        elements[i].oncut = null;
-    }
-    function preventShareThis() {
-        document.getSelection = window.getSelection = function() {
-            return {isCollapsed: true};
-        }
-    }
-    var scripts = document.getElementsByTagName('script');
-    for (var i = 0; i < scripts.length; i++) {
-        if (scripts[i].src.indexOf('w.sharethis.com') > -1) {
-            preventShareThis();
-        }
-    }
-    if (typeof Tynt != 'undefined') {
-        Tynt = null;
-    }
-}
-rtcScript();
-setInterval(rtcScript, 2000);</script><style>
-* {
-    -webkit-user-select: auto !important; /* injected by RightToCopy */
-}</style></head>
+  <link rel="manifest" href="/manifest.json">
+</head>
 <body>
-<div class="mdl-layout__container"><div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header is-upgraded" data-upgraded=",MaterialLayout">
+<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
   <!-- Header section containing title -->
-  <header class="mdl-layout__header mdl-color-text--white mdl-color--teal-700 is-casting-shadow">
+  <header class="mdl-layout__header mdl-color-text--white mdl-color--teal-700">
     <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
       <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--8-col-desktop">
         <h3>HomeBrain FCM</h3>
@@ -68,10 +50,11 @@ setInterval(rtcScript, 2000);</script><style>
       <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
         <div class="mdl-card__supporting-text mdl-color-text--grey-600">
           <!-- div to display the generated Instance ID token -->
-          <div id="token_div" style="">
+          <div id="token_div" style="display: none;">
             <h4>Instance ID Token</h4>
-            <p id="token" style="word-break: break-all;">fllsQmtZjuM:APA91bF1OhUUmDrnRfyFikRQSrcmxPi3_orO7lZ_uq5TlYUjSMmZrnugazBe4q9_FkDkfmBc886WqpItjGie-WPb1ir8lxvgLJriiwWxQ9CZkDMiNrVwr-COsRxyI5a9yDlBOcE6cKSF</p>
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="deleteToken()" data-upgraded=",MaterialButton">Delete Token</button>
+            <p id="token" style="word-break: break-all;"></p>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                    onclick="deleteToken()">Delete Token</button>
           </div>
           <!-- div to display the UI to allow the request for permission to
                notify the user. This is shown if the app has not yet been
@@ -79,7 +62,8 @@ setInterval(rtcScript, 2000);</script><style>
           <div id="permission_div" style="display: none;">
             <h4>Needs Permission</h4>
             <p id="token"></p>
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="requestPermission()" data-upgraded=",MaterialButton">Request Permission</button>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                    onclick="requestPermission()">Request Permission</button>
           </div>
           <!-- div to display messages received by this app. -->
           <div id="messages"></div>
@@ -88,14 +72,14 @@ setInterval(rtcScript, 2000);</script><style>
 
     </div>
   </main>
-</div></div>
+</div>
 
 <!-- Import and configure the Firebase SDK -->
 <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
 <!-- If you do not serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
-<script src="./HomeBrain FCM_files/firebase-app.js.download"></script>
-<script src="./HomeBrain FCM_files/firebase-messaging.js.download"></script>
-<script src="./HomeBrain FCM_files/init.js.download"></script>
+<script src="js/firebase-app.js"></script>
+<script src="js/firebase-messaging.js"></script>
+<script src="js/init.js"></script>
 
 <script>
   // [START get_messaging_object]
@@ -129,20 +113,6 @@ setInterval(rtcScript, 2000);</script><style>
     });
   });
   // [END refresh_token]
-
-  // [START receive_message]
-  // Handle incoming messages. Called when:
-  // - a message is received while the app has focus
-  // - the user clicks on an app notification created by a sevice worker
-  //   `messaging.setBackgroundMessageHandler` handler.
-  messaging.onMessage(function(payload) {
-    console.log("Message received. ", payload);
-    // [START_EXCLUDE]
-    // Update the UI to include the received message.
-    appendMessage(payload);
-    // [END_EXCLUDE]
-  });
-  // [END receive_message]
 
   function resetUI() {
     clearMessages();
@@ -287,6 +257,5 @@ setInterval(rtcScript, 2000);</script><style>
 
   resetUI();
 </script>
-
-
-</body></html>
+</body>
+</html>

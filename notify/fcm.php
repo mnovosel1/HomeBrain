@@ -6,27 +6,57 @@ define('DIR', str_replace('/notify', '', dirname(__FILE__)));
 #API access key from Google API's Console
 define( 'API_ACCESS_KEY', 'AAAAmadg5-I:APA91bFtQtjnp9899CTRWeWCeI39OobdY-mEmk4FUktw5ZRDiIYZ9NQ07scDNJ1R1tEDLdNJ0_DSUbXVhJGd4uH1bM1P8XlKg_Ia7eQF4n6miHb36jkf3NljXUodWFKi62Se0qg1oFRJ' );
 
+$ttl = 300;
+
 $sqlite = new SQLite3(DIR .'/var/hbrain.db');
 $sqliteres = $sqlite->query("SELECT token FROM fcm");
 while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
 {
 	#prep the bundle
-		 $msg = array
-			  (
-			'body' 	=> $argv[1],
-			'title'	=> 'HomeBrain',
-					'icon'	=> 'homebrain.png',
-					'sound' => 'notify.wav'
-			  );
+		//notification only
+		$msg = array
+			(
+				'body' 	=> $argv[1],
+				'title'	=> 'HomeBrain',
+						'icon'	=> 'homebrain.png',
+						'sound' => 'notify.wav'
+			);
 
 		$fields = array
-				(
-					'to'			=> $entry["token"],
-					'time_to_live' 	=> 300
-				);
+			(
+				'to'			=> $entry["token"],
+				'time_to_live' 	=> $ttl
+			);
 		
-		if ( isset($argv[2]) ) $fields['data'] = array('msg' => $argv[1]);
-		else $fields['notification'] = $msg;
+		
+		
+		// notification data
+		switch ( true )
+		{
+			//notify with custom title and data payload
+			case isset($argv[3]):
+				$fields['data'] = array(
+										'title' => $argv[1],
+										'msg' 	=> $argv[2],
+										'data' 	=> $argv[3]
+										);
+			break;
+			
+			//notify with custom title
+			case isset($argv[2]):
+				$fields['data'] = array(
+										'title' => $argv[1],
+										'msg' 	=> $argv[2]
+										);
+			break;
+
+			//notify simple
+			default:
+				$fields['data'] = array(
+										'title' => 'HomeBrain', 
+										'msg' => $argv[1]
+										);
+		}
 		
 		$headers = array
 				(

@@ -2,7 +2,7 @@
 	"name": "HomeBrain",
 	"short_name": "HomeBrain",
 	"icons": [{
-			"src": "favicon.ico",
+			"src": "https://hbrain.bubulescu.org/favicon.ico",
 			"sizes": "319x319"
 		 }],
 	"display": "standalone",

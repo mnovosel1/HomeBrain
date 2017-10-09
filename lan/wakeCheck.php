@@ -16,12 +16,12 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC))
 }
 
 // funkcija koja šalje notifikacije //////////////
-function notify ($msg)
+function notify ($msg, $title = "HomeBrain")
 {
 	$db = new SQLite3(DIR .'/var/log.db');
 	$db->query("INSERT INTO events VALUES(datetime('now', 'localtime'),'".$msg."'");
 	
-	exec(DIR . '/notify/fcm.php "' . $msg . '" &');
+	exec(DIR . '/notify/fcm.php "' . $title . '" "' . $msg . '" &');
 	exec(DIR . '/notify/kodi.php "' . $msg . '" &');
 }
 //////////////////////////////////////////////////
@@ -84,7 +84,7 @@ if ( $mpdplay != $table["MPD playing"] )
 	$db->query("UPDATE states SET active=".$mpdplay." WHERE name='MPD playing'");
 	
 	$status = ($mpdplay > 0) ? 'svira' : 'je ugašen';
-	notify('MPD ' . $status . '.');
+	notify('MPD ' . $status . '.', 'MPD');
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,7 +108,7 @@ if ( $serverlive < 1 )
 		case ( ($srvWakeTime - time()) <= 1800 ): // .. je srvWakeTime za pola sata ili manje
 		case ( $kodilive > 0 ): // .. je KODI upaljen
 			exec(DIR . "/lan/srvWake.sh;");
-			notify('Palim HomeServer.');
+			notify('Palim HomeServer.', 'HomeServer');
 		
 		default:
 			break;
@@ -127,7 +127,7 @@ else
 		
 		default:
 			exec(DIR . "/lan/srvShut.sh;");
-			notify('Gasim HomeServer.');
+			notify('Gasim HomeServer.', 'HomeServer');
 		
 	}
 }

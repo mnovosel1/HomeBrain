@@ -3,12 +3,12 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 $path = dirname(__FILE__);
-$configglobss = parse_ini_file($path .'/configglobs.ini');
+$configglobss = parse_ini_file($path .'/config.ini');
 
 $sqlitedb = new SQLite3($path .'/var/hbrain.db');
 $mysqlidb = new mysqli($configglobss["DB_REPLIC_HOST"], $configglobss["DB_REPLIC_USER"], $configglobss["DB_REPLIC_PASS"], $configglobss["DB_REPLIC_DBNAME"]);
 
-$sqliteres = $sqlitedb->query('SELECT c.timestamp, c.statebefore, c.changedto, s.name state, s.auto FROM changelog c JOIN states s ON c.stateid = s.rowid;');
+$sqliteres = $sqlitedb->query('SELECT c.timestamp, c.statebefore, c.changedto, s.name state, s.auto FROM changelog c JOIN states s ON c.state = s.name;');
 
 while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC)) {
     $mysqlidb->query("REPLACE INTO changeLog (timestamp, statebefore, state, auto, changedto) 
@@ -29,7 +29,7 @@ $sql = "
     BEGIN TRANSACTION;
 
         CREATE TABLE states (
-            name varchar(75) NOT NULL,
+            name varchar(50) PRIMARY KEY,
             auto int(1) NOT NULL DEFAULT 1,
             active int(1) NOT NULL DEFAULT 0
         );
@@ -46,8 +46,9 @@ $sql .= "
 			timestamp DATETIME,
 			token varchar(99) NOT NULL,
 			PRIMARY KEY(token)
-		);
- ";
+        );
+        
+";
 
 $output = '';
 exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "fcm"\' | grep \'^INSERT\'', $output);
@@ -58,10 +59,10 @@ $sql .= "
         CREATE TABLE changelog (
             timestamp DATETIME,
             statebefore varchar(30) NOT NULL,
-            stateid int(11) NOT NULL,
+            state varchar(50) NOT NULL,
             changedto int(1) NOT NULL,
-            PRIMARY KEY(statebefore, stateid, changedto),
-            FOREIGN KEY (stateid) REFERENCES states(rowid)
+            PRIMARY KEY(statebefore, state, changedto),
+            FOREIGN KEY (state) REFERENCES states(name)
         );
 ";
 
@@ -71,11 +72,11 @@ $sql .= "
             FOR EACH ROW
             WHEN OLD.active <> NEW.active
             BEGIN
-                INSERT OR REPLACE INTO changelog (timestamp, statebefore, stateid, changedto)
+                INSERT OR REPLACE INTO changelog (timestamp, statebefore, state, changedto)
                 VALUES (
                             datetime('now','localtime'), 
-                            (SELECT group_concat(active, '') FROM states ORDER BY rowid ASC), 
-                            NEW.rowid, 
+                            (SELECT group_concat(active, '') FROM states), 
+                            NEW.name, 
                             NEW.active
                         );
                 DELETE FROM changelog WHERE timestamp <= date('now', '-60 day');
@@ -93,10 +94,9 @@ $sql .= "
                     c.changedto, 
                     s.name, 
                     s.auto
-                FROM changelog c join states s ON c.stateid=s.rowid
-                GROUP BY c.statebefore, c.stateid, c.changedto
+                FROM changelog c join states s ON c.state=s.name
+                GROUP BY c.statebefore, c.state, c.changedto
                 ORDER BY weight desc, c.timestamp desc;
-
 ";
 
 $sql .= "

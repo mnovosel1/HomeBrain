@@ -1,34 +1,35 @@
 <!doctype html>
 <html lang="hr">
-   <head>
-      <meta charset="utf-8">
-      <title>HomeBrain</title>
-      <link href="css/jquery-ui.min.css" rel="stylesheet">
-      <link href="css/c3.css" rel="stylesheet" type="text/css">
+	<head>
+		<meta charset="utf-8">
+		<title>HomeBrain</title>
+		<link href="css/jquery-ui.min.css" rel="stylesheet">
+		<link href="css/c3.css" rel="stylesheet" type="text/css">
 
-      <script src="js/jquery.min.js"></script>
-      <script src="js/jquery-ui.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
 
-      <script src="js/d3.min.js" charset="utf-8"></script>
-      <script src="js/c3.min.js"></script>
-    
-      <script>
-         $(function() {
-            $( "#tabs" ).tabs();
-         });
+		<script src="js/d3.min.js" charset="utf-8"></script>
+		<script src="js/c3.min.js"></script>
 
-        $(document).ready(function(){
-        });
-      </script>
-      
-      <style>
-        table.center {
-          margin-left: auto;
-          margin-right: auto;
-          width: 95%
-        }
-      </style>
-   </head>
+
+		<script>		
+			 $(function() {
+				$( "#tabs" ).tabs();
+			 });
+
+			$(document).ready(function(){
+			});
+		</script>
+
+		<style>
+			table.center {
+			  margin-left: auto;
+			  margin-right: auto;
+			  width: 95%
+			}
+		</style>
+	</head>
    <body style="background-color: #E0E0E0;">
       <div id="tabs">
          <ul>
