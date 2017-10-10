@@ -94,9 +94,28 @@ class MyAPI extends API
 			switch ($this->verb)
 			{
 				case 'reg':
-					$ret = json_encode($this->sqlite->query("INSERT INTO fcm VALUES(datetime('now', 'localtime'), '".$this->args[0]."')"));
+					$argumenti = explode("____", $this->args[0]);
+
+					$sql = "INSERT INTO fcm (timestamp, email, token)
+								VALUES( datetime('now', 'localtime'), 
+										'".$argumenti[0]."',
+										'".$argumenti[1]."'
+										)";
+
+					$ret = $this->sqlite->query($sql);
+					$error = $this->sqlite->lastErrorMsg();
+
 					exec ("cp ". DIR ."/var/hbrain.db ". DIR ."/var_sav/hbrain.db");
-					return $ret;
+/*
+					ob_start();
+					//var_dump($argumenti);
+					echo $error . PHP_EOL;
+					echo $sql;
+					$out = ob_get_clean();
+					file_put_contents('debug.txt', $out . PHP_EOL . PHP_EOL, FILE_APPEND);
+*/
+					if ( $ret !== false ) return json_encode(true);
+					else return json_encode(false);
 				break;
 			}			
 		}

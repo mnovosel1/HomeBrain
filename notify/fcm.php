@@ -9,7 +9,7 @@ define( 'API_ACCESS_KEY', 'AAAAmadg5-I:APA91bFtQtjnp9899CTRWeWCeI39OobdY-mEmk4FU
 $ttl = 300;
 
 $sqlite = new SQLite3(DIR .'/var/hbrain.db');
-$sqliteres = $sqlite->query("SELECT token FROM fcm");
+$sqliteres = $sqlite->query("SELECT token FROM fcm WHERE approved = 'false'");
 while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
 {
 	#prep the bundle

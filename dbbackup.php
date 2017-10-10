@@ -44,10 +44,12 @@ foreach ( $output as $line )
 $sql .= " 
 		CREATE TABLE fcm (
 			timestamp DATETIME,
+            email varchar(99) NOT NULL,
+            approved BOOLEAN DEFAULT false,
 			token varchar(99) NOT NULL,
 			PRIMARY KEY(token)
         );
-        
+  
 ";
 
 $output = '';
