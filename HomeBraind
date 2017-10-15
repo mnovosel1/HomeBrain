@@ -40,8 +40,7 @@ while true ; do
 			/srv/HomeBrain/heating/getTempSet.php
 			/srv/HomeBrain/heating/dbbackup.php
 
-			sudo /sbin/shutdown -r now
-			
+			sudo /sbin/shutdown -r now			
 		fi
 	fi
 
