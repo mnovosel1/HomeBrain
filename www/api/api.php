@@ -105,7 +105,7 @@ class MyAPI extends API
 					$ret = $this->sqlite->query($sql);
 					$error = $this->sqlite->lastErrorMsg();
 
-					exec ("cp ". DIR ."/var/hbrain.db ". DIR ."/var_sav/hbrain.db");
+					exec ("cp ". DIR ."/var/hbrain.db ". DIR ."/saved_var/hbrain.db");
 /*
 					ob_start();
 					//var_dump($argumenti);
