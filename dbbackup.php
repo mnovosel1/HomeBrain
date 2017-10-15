@@ -2,11 +2,13 @@
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-$path = dirname(__FILE__);
-$configglobss = parse_ini_file($path .'/config.ini');
+/* WORKING DIR constant */
+define('DIR', dirname(__FILE__));
 
-$sqlitedb = new SQLite3($path .'/var/hbrain.db');
-$mysqlidb = new mysqli($configglobss["DB_REPLIC_HOST"], $configglobss["DB_REPLIC_USER"], $configglobss["DB_REPLIC_PASS"], $configglobss["DB_REPLIC_DBNAME"]);
+$configs = parse_ini_file(DIR .'/config.ini');
+
+$sqlitedb = new SQLite3(DIR .'/var/hbrain.db');
+$mysqlidb = new mysqli($configs["DB_REPLIC_HOST"], $configs["DB_REPLIC_USER"], $configs["DB_REPLIC_PASS"], $configs["DB_REPLIC_DBNAME"]);
 
 $sqliteres = $sqlitedb->query('SELECT c.timestamp, c.statebefore, c.changedto, s.name state, s.auto FROM changelog c JOIN states s ON c.state = s.name;');
 
@@ -37,7 +39,7 @@ $sql = "
 ";
 
 $output = '';
-exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "states"\' | grep \'^INSERT\'', $output);
+exec('sqlite3 '. DIR .'/var/hbrain.db \'.dump "states"\' | grep \'^INSERT\'', $output);
 foreach ( $output as $line )
   $sql .= "        ".$line . "\n";
 
@@ -53,7 +55,7 @@ $sql .= "
 ";
 
 $output = '';
-exec('sqlite3 '. $path .'/var/hbrain.db \'.dump "fcm"\' | grep \'^INSERT\'', $output);
+exec('sqlite3 '. DIR .'/var/hbrain.db \'.dump "fcm"\' | grep \'^INSERT\'', $output);
 foreach ( $output as $line )
   $sql .= "        ".$line . "\n";
   
@@ -106,5 +108,9 @@ $sql .= "
 
 ";
 
-file_put_contents($path .'/hbrain.sql', $sql);
+file_put_contents(DIR .'/hbrain.sql', $sql);
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+exec ("cp ". DIR ."/var/hbrain.db ". DIR ."/saved_var/hbrain.db");
+
+?>
