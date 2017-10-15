@@ -26,8 +26,7 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
 			(
 				'to'			=> $entry["token"],
 				'time_to_live' 	=> $ttl
-			);
-		
+			);		
 		
 		
 		// notification data
@@ -57,7 +56,7 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
 										'msg' => $argv[1]
 										);
 		}
-		
+
 		$headers = array
 				(
 					'Authorization: key=' . API_ACCESS_KEY,
@@ -74,7 +73,6 @@ while ($entry = $sqliteres->fetchArray(SQLITE3_ASSOC))
 			curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
 			$result = curl_exec($ch );
 			curl_close( $ch );
-
 
 	$result = json_decode($result);
 	if ( $result->failure > 0 )
